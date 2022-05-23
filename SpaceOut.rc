@@ -1,0 +1,42 @@
+//-----------------------------------------------------------------
+// Space Out Resources
+// RC Source - SpaceOut.rc
+//-----------------------------------------------------------------
+
+//-----------------------------------------------------------------
+// Include Files
+//-----------------------------------------------------------------
+#include "Resource.h"
+
+//-----------------------------------------------------------------
+// Icons
+//-----------------------------------------------------------------
+IDI_LOGO          ICON         "Logo.ico"
+IDI_LOGO_SM       ICON         "Logo_sm.ico"
+
+//-----------------------------------------------------------------
+// Bitmaps
+//-----------------------------------------------------------------
+IDB_PLAYER               BITMAP       "BMissile.bmp"
+IDB_SMPLAYER             BITMAP       "SmPlayer.bmp"
+IDB_GAMEOVER		BITMAP		"Gameover.bmp"
+IDB_WALL		BITMAP		"Wall.bmp"
+IDB_STAIR		BITMAP		"Stair.bmp"
+IDB_MISSILE		BITMAP		"BMissile.bmp"
+IDB_HEART		BITMAP		"Heart.bmp"
+IDB_KEY			BITMAP		"Key.bmp"
+IDB_DOOR 		BITMAP		"Door.bmp"
+IDB_MAGE 		BITMAP		"Mage.bmp"
+IDB_GOLLUM 		BITMAP		"Gollum.bmp"
+IDB_BAT 			BITMAP		"Key.bmp"
+IDB_GHOST 		BITMAP		"Key.bmp"
+IDB_BOMBER 		BITMAP		"Bomber.bmp"
+IDB_HUNTER 		BITMAP		"Hunter.bmp"
+IDB_MAGEMISSILE 	BITMAP		"Key.bmp"
+IDB_BATMISSILE 		BITMAP		"Key.bmp"
+IDB_BOMBERBOMB 	BITMAP		"Key.bmp"
+
+//-----------------------------------------------------------------
+// Wave Sounds
+//-----------------------------------------------------------------
+IDW_GAMEOVER          WAVE         "GameOver.wav"

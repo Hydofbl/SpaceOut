@@ -1,0 +1,57 @@
+﻿cl : komut satırı warning D9035: 'Gm' seçeneği kullanım dışı ve ileride yayınlanacak bir sürümden çıkarılacak
+  SpaceOut.cpp
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(436,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(439,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(441,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(448,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(451,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(453,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(459,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(462,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(464,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(473,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(476,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(478,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(484,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(487,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(489,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(496,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(499,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(501,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(509,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(512,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(514,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(520,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(523,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(525,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(532,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(535,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(537,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(546,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(549,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(551,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(558,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(561,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(563,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(572,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(575,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(577,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(585,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(588,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(590,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(596,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(600,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(602,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(609,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(612,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(614,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(622,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(625,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(627,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(634,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(637,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(639,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(646,33): warning C4244: 'bağımsız değişken': 'double' - 'int' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(649,46): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(651,78): warning C4244: '=': 'double' - 'LONG' dönüşümü; veri kaybı olabilir
+  SpaceOut.vcxproj -> C:\Users\kara-\Desktop\SpaceOut\SpaceOut\Debug\SpaceOut.exe
