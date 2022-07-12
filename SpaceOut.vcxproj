@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{824EC981-12EF-432C-AAAE-0D16EBA0706A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -94,22 +95,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlienSprite.cpp" />
+    <ClCompile Include="EnemySprite.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SpaceOut.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stair.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlienSprite.h" />
+    <ClInclude Include="EnemySprite.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="Collectible.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Shield.h" />
     <ClInclude Include="SpaceOut.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stair.h" />

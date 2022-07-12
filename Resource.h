@@ -13,7 +13,6 @@
 // Bitmaps                    Range : 2000 - 2999
 //-----------------------------------------------------------------
 #define IDB_PLAYER               2001
-#define IDB_SMPLAYER             2002
 #define IDB_GAMEOVER             2003
 #define IDB_WALL				 2004
 #define IDB_STAIR				 2005
@@ -28,11 +27,25 @@
 #define IDB_GHOST				 2013
 #define IDB_BOMBER				 2014
 #define IDB_HUNTER				 2015
+// Missiles and etc.
 #define IDB_MAGEMISSILE			 2016
 #define IDB_BATMISSILE			 2017
 #define IDB_BOMBERBOMB			 2018
+#define IDB_SHIELD				 2019
+#define IDB_GAMEWON				 2020
+#define IDB_MISSILE				 2021
+#define IDB_KEYHORIZONTAL		 2022
+#define IDB_HEARTEMPTY			 2023
+#define IDB_FIREBALLICON		 2024
 
 //-----------------------------------------------------------------
 // Wave Sounds                Range : 3000 - 3999
 //-----------------------------------------------------------------
 #define IDW_GAMEOVER          3001
+#define IDW_SHIELDBLOCK       3002
+#define IDW_VICTORY           3003
+#define IDW_DAMAGED           3004
+#define IDW_DOOROPEN          3005
+#define IDW_JUMP			  3006
+#define IDW_HEAL			  3007
+#define IDW_KEY				  3008

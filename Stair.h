@@ -19,7 +19,7 @@ class Stair
 protected:
     // Member Variables
     Bitmap* m_pBitmap;
-    RECT          m_rcPosition;
+public: RECT          m_rcPosition;
 
 public:
     // Constructor(s)/Destructor

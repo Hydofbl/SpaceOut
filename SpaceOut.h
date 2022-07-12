@@ -16,51 +16,93 @@
 #include "Background.h"
 #include "Stair.h"
 #include "Platform.h"
-#include "AlienSprite.h"
+#include "EnemySprite.h"
+#include "Shield.h"
+#include "Collectible.h"
 
 //-----------------------------------------------------------------
 // Global Variables
 //-----------------------------------------------------------------
+
+// Generals
 HINSTANCE         _hInstance;
 GameEngine*       _pGame;
 HDC               _hOffscreenDC;
 HBITMAP           _hOffscreenBitmap;
-Bitmap*           _pPlayerBitmap;
-Bitmap*           _pSmPlayerBitmap;
+
 Bitmap*           _pGameOverBitmap;
+Bitmap*			  _bGameWonBitmap;
+
+StarryBackground* _pBackground;
 Bitmap*			  _pWallBitmap;
 Bitmap*			  _pStairBitmap;
-StarryBackground* _pBackground;
+
+Bitmap*			  _pPlayerBitmap;
 Sprite*           _pPlayerSprite;
-int               _iFireInputDelay;
-int               _iNumLives, _iScore;
-BOOL              _bGameOver;
-int               _platformHeight = 105; 
+
+// Level Informations
+BOOL    _bGameOver, _bGameWon;
+int     enemyFireRate;
+int		gameDifficulty = 1;
+int		level = 1;
+int		maxGhostAmount = 3;
+
+// Firing
+int               _iFireInputDelay; 
+const int		  _iFireMaxDelay = 3;
+Bitmap*			  _pMissileBitmap;
+Bitmap*			  fireballCollectibleBitmap;
+Sprite*			  fireballCollectibleSprite;
+int				  maxFireballAmount = 3;
+int				  fireballAmount = 3;
+
+// Collectibles
+const int		  MAXLIVE = 7;
+int               _iNumLives;
+int				  keyNeeded = 1, keyAmount = 0;
+
+// About Player
+RECT			startPosition;
+BOOL			facingRight = true;
+
+// About player movement, physic and jumping
 const int	HORIZONTALGRIP = 1;
 const int	GRAVITY = 1;
 const int   MAXJUMPSPEED = 8;
 const int   MAXLADDERSPEED = 6;
-const int   MAXLIVE = 5;
 BOOL        isJumpPressed = false;
+
+// About Stairs and platforms
 BOOL		isOnStair = false;
-const int			numOfStairs = 18;
-const int			numOfPlatforms = 197;
+BOOL		isOnGrounded = false;
+const int			numOfStairs = 1000;
+const int			numOfPlatforms = 2000;
+const int			numOfFloor = 7;
+int			numOfStairsDynmc;
+int			numOfPlatformsDynmc;
+int			numOfFloorDynmc;
 int			whichStair = -1;
-Stair*		_pStair[numOfStairs] = {};
-Platform*	_pPlatform[numOfPlatforms] = {};
+
+// About collision and platforms
+Platform* _pPlatform[numOfPlatforms] = {};	// Dynamic
 int isCollide = 0;
 BOOL collideBottom = false;
 BOOL collideTop = false;
 
-int     _iDifficulty;
+// Map
+int         map[29][50] = {};
+Stair*		_pStair[numOfStairs] = {};		// Dynamic
+int			floorBottoms[numOfFloor] = {};	// Dynamic
 
-Bitmap* missileBitmap;
+// Enemy Bitmaps and Sprites
 Sprite* missileSprite;
 
 Bitmap* heartBitmap;
+Bitmap* heartEmptyBitmap;
 Sprite* heartSprite;
 
 Bitmap* keyBitmap;
+Bitmap* keyUIBitmap;
 Sprite* keySprite;
 
 Bitmap* doorBitmap;
@@ -83,17 +125,34 @@ Bitmap* ghostBitmap;
 Sprite* ghostSprite;
 
 Bitmap* bomberBitmap;
-Sprite* bomberSprite;
+EnemySprite* bomberSprite;
 Bitmap* bomberBombBitmap;
-Sprite* bomberBombSprite;
 
 Bitmap* hunterBitmap;
 Sprite* hunterSprite;
 
+// Shield
+Bitmap* shieldBitmap;
+Sprite* shieldSprite;
+int shieldInputDelay = 0;
+int shieldMaxDelay = 8;
+int shieldUsageDelay = 0;
+int shieldUsageMaxDelay = 8;
+BOOL canUseShield = true;
 
 //-----------------------------------------------------------------
 // Function Declarations
 //-----------------------------------------------------------------
 void NewGame();
+void AddOtherSprites(int whichSprite, int x, int y, int x1, int x2);
+BOOL CheckMapIfContains(int num);
+int CheckMapForQuantity(int num);
+BOOL CheckIntervalForDoor(int x1, int x2, int y);
+void CreateMap();
+void FillPlatformArray();
+void FillStairArray();
 void isOnLadderFunc();
-void Collide(Sprite* player, Platform* platform);
+void CheckGround();
+void FacingWhere();
+void CloseShield();
+void Collide();

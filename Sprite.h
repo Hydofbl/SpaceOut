@@ -23,7 +23,8 @@ typedef WORD        BOUNDSACTION;
 const BOUNDSACTION  BA_STOP   = 0,
                     BA_WRAP   = 1,
                     BA_BOUNCE = 2,
-                    BA_DIE    = 3;
+                    BA_DIE    = 3,
+                    BA_BOUNCEHORIZONTAL = 4;
 
 //-----------------------------------------------------------------
 // Sprite Class
@@ -53,6 +54,8 @@ public:
   // Constructor(s)/Destructor
   Sprite(Bitmap* pBitmap);
   Sprite(Bitmap* pBitmap, RECT& rcBounds,
+    BOUNDSACTION baBoundsAction = BA_STOP);
+  Sprite(Bitmap* pBitmap, RECT& rcBounds, Sprite* _playerSprite,
     BOUNDSACTION baBoundsAction = BA_STOP);
   Sprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
     RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
@@ -88,6 +91,7 @@ public:
   int     GetWidth()
     { return (m_pBitmap->GetWidth() / m_iNumFrames); };
   int     GetHeight()               { return m_pBitmap->GetHeight(); };
+  RECT& GetBounds() { return m_rcBounds; };
 };
 
 //-----------------------------------------------------------------

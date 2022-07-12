@@ -50,6 +50,28 @@ Sprite::Sprite(Bitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
   m_bOneCycle = FALSE;
 }
 
+Sprite::Sprite(Bitmap* pBitmap, RECT& rcBounds, Sprite* _playerSprite, BOUNDSACTION baBoundsAction)
+{
+  // Calculate a random position
+  int iXPos = rand() % (rcBounds.right - rcBounds.left);
+  int iYPos = rand() % (rcBounds.bottom - rcBounds.top);
+
+  // Initialize the member variables
+  m_pBitmap = pBitmap;
+  m_iNumFrames = 1;
+  m_iCurFrame = m_iFrameDelay = m_iFrameTrigger = 0;
+  SetRect(&m_rcPosition, iXPos, iYPos, iXPos + pBitmap->GetWidth(),
+    iYPos + pBitmap->GetHeight());
+  CalcCollisionRect();
+  m_ptVelocity.x = m_ptVelocity.y = 0;
+  m_iZOrder = 0;
+  CopyRect(&m_rcBounds, &rcBounds);
+  m_baBoundsAction = baBoundsAction;
+  m_bHidden = FALSE;
+  m_bDying = FALSE;
+  m_bOneCycle = FALSE;
+}
+
 Sprite::Sprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
     RECT& rcBounds, BOUNDSACTION baBoundsAction)
 {
@@ -138,6 +160,31 @@ SPRITEACTION Sprite::Update()
     }
     if (bBounce)
       SetVelocity(ptNewVelocity);
+  }
+  else if (m_baBoundsAction == BA_BOUNCEHORIZONTAL) {
+      BOOL bBounce = FALSE;
+      POINT ptNewVelocity = m_ptVelocity;
+      if (ptNewPosition.x < m_rcBounds.left)
+      {
+          bBounce = TRUE;
+          ptNewPosition.x = m_rcBounds.left;
+          ptNewVelocity.x = -ptNewVelocity.x;
+      }
+      else if ((ptNewPosition.x + ptSpriteSize.x) > m_rcBounds.right)
+      {
+          bBounce = TRUE;
+          ptNewPosition.x = m_rcBounds.right - ptSpriteSize.x;
+          ptNewVelocity.x = -ptNewVelocity.x;
+      }
+      if ((ptNewPosition.y + ptSpriteSize.y) > m_rcBounds.bottom)
+      {
+          bBounce = TRUE;
+          ptNewPosition.y = m_rcBounds.bottom - ptSpriteSize.y;
+          ptNewVelocity.y = -ptNewVelocity.y;
+      }
+
+      if (bBounce)
+          SetVelocity(ptNewVelocity);
   }
   // Die?
   else if (m_baBoundsAction == BA_DIE)
