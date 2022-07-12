@@ -1,4 +1,0 @@
-﻿Resource.h(36): warning RC4005: 'IDB_MISSILE' : redefinition
-  
-EnemySprite.obj : warning LNK4075: '/EDITANDCONTINUE' belirtimi nedeniyle '/SAFESEH' yoksayılıyor
-  SpaceOut.vcxproj -> C:\Users\kara-\Desktop\SpaceOut\SpaceOut\Debug\SpaceOut.exe
