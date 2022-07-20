@@ -1,6 +1,0 @@
-﻿cl : komut satırı warning D9035: 'Gm' seçeneği kullanım dışı ve ileride yayınlanacak bir sürümden çıkarılacak
-  SpaceOut.cpp
-C:\Users\kara-\Desktop\SpaceOut\SpaceOut\Resource.h(36,1): warning C4005: 'IDB_MISSILE': makro yeniden tanımlama
-C:\Users\kara-\Desktop\SpaceOut\SpaceOut\Resource.h(19): message : önceki 'IDB_MISSILE' tanımına bakın
-C:\Users\kara-\Desktop\SpaceOut\SpaceOut\SpaceOut.cpp(840,40): warning C4101: 'arkenar': yerel değişken başvurusu kaldırıldı
-  SpaceOut.vcxproj -> C:\Users\kara-\Desktop\SpaceOut\SpaceOut\Debug\SpaceOut.exe
