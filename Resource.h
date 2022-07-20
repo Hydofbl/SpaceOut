@@ -37,6 +37,9 @@
 #define IDB_KEYHORIZONTAL		 2022
 #define IDB_HEARTEMPTY			 2023
 #define IDB_FIREBALLICON		 2024
+// Menu Bitmaps
+#define IDB_GAMETITLE			 2025
+#define IDB_PLAYBUTTON			 2026
 
 //-----------------------------------------------------------------
 // Wave Sounds                Range : 3000 - 3999

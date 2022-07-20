@@ -41,11 +41,16 @@ Bitmap*			  _pPlayerBitmap;
 Sprite*           _pPlayerSprite;
 
 // Level Informations
-BOOL    _bGameOver, _bGameWon;
+BOOL    _bGameOver, _bGameWon, _bGameMenu;
 int     enemyFireRate;
 int		gameDifficulty = 1;
 int		level = 1;
 int		maxGhostAmount = 3;
+
+// Menu
+Bitmap* gameTitleBitmap;
+Bitmap* playButtonBitmap;
+int playButtonX = 0, playButtonY = 0;
 
 // Firing
 int               _iFireInputDelay; 

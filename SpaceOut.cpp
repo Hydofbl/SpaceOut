@@ -68,6 +68,9 @@ void GameStart(HWND hWindow)
     _pMissileBitmap = new Bitmap(hDC, IDB_MISSILE, _hInstance);
     fireballCollectibleBitmap = new Bitmap(hDC, IDB_FIREBALLICON, _hInstance);
 
+    gameTitleBitmap = new Bitmap(hDC, IDB_GAMETITLE, _hInstance);
+    playButtonBitmap = new Bitmap(hDC, IDB_PLAYBUTTON, _hInstance);
+
     // Create the starry background
     _pBackground = new StarryBackground(1250, 800);
 
@@ -108,6 +111,8 @@ void GameEnd()
     delete shieldBitmap;
     delete _pMissileBitmap;
     delete fireballCollectibleBitmap;
+    delete gameTitleBitmap;
+    delete playButtonBitmap;
 
     for (int i = 0; i < numOfPlatformsDynmc; i++)
     {
@@ -145,61 +150,74 @@ void GamePaint(HDC hDC)
     // Draw the background
     _pBackground->Draw(hDC);
 
-    for (int y = 0; y < 29; y++)
+    if (!_bGameOver && !_bGameWon)
     {
-        for (int x = 0; x < 50; x++)
+        if (!_bGameMenu)
         {
-            if (map[y][x] == 1)
+            for (int y = 0; y < 29; y++)
             {
-                _pWallBitmap->Draw(hDC, _pWallBitmap->GetWidth() * x,
-                    _pWallBitmap->GetHeight() * y + 25, TRUE);
+                for (int x = 0; x < 50; x++)
+                {
+                    if (map[y][x] == 1)
+                    {
+                        _pWallBitmap->Draw(hDC, _pWallBitmap->GetWidth() * x,
+                            _pWallBitmap->GetHeight() * y + 25, TRUE);
+                    }
+                    else if (map[y][x] == 2)
+                    {
+                        _pStairBitmap->Draw(hDC, _pStairBitmap->GetWidth() * x,
+                            25 * y + 25, TRUE);
+                    }
+                }
             }
-            else if (map[y][x] == 2)
+
+            // Draw the sprites
+            _pGame->DrawSprites(hDC);
+
+            TCHAR szText[128];
+
+            wsprintf(szText, "Lives: ");
+
+            TextOut(hDC, 1040, 5, szText, strlen(szText));
+
+            // Draw the number of remaining lives
+            for (int i = 0; i < MAXLIVE; i++)
             {
-                _pStairBitmap->Draw(hDC, _pStairBitmap->GetWidth() * x,
-                    25 * y + 25, TRUE);
+                if (i < _iNumLives)
+                    heartBitmap->Draw(hDC, 1100 + (heartBitmap->GetWidth() * i) + 10,
+                        7, TRUE);
+                else
+                    heartEmptyBitmap->Draw(hDC, 1100 + (heartEmptyBitmap->GetWidth() * i) + 10,
+                        7, TRUE);
             }
+
+            wsprintf(szText, "Key Needed: ");
+
+            TextOut(hDC, 50, 5, szText, strlen(szText));
+
+            // Draw the number of remaining keys
+            for (int i = 0; i < keyNeeded - keyAmount; i++)
+                keyUIBitmap->Draw(hDC, 160 + (keyUIBitmap->GetWidth() * i), 7, TRUE);
+
+            wsprintf(szText, "Fireball Amount: %dx", fireballAmount);
+
+            TextOut(hDC, 600, 5, szText, strlen(szText));
+
+            fireballCollectibleBitmap->Draw(hDC, 730, 8, TRUE);
+
+            wsprintf(szText, "Level: %d", level);
+
+            TextOut(hDC, 420, 5, szText, strlen(szText));
+        }
+        else
+        {
+            gameTitleBitmap->Draw(hDC, 300,  150, TRUE);
+            playButtonBitmap->Draw(hDC, 600,  500, TRUE);
+
+            playButtonX = 600;
+            playButtonY = 500;
         }
     }
-
-    // Draw the sprites
-    _pGame->DrawSprites(hDC);
-
-
-    TCHAR szText[128];
-
-    wsprintf(szText, "Lives: ");
-
-    TextOut(hDC, 1040, 5, szText, strlen(szText));
-
-    // Draw the number of remaining lives
-    for (int i = 0; i < MAXLIVE; i++)
-    {
-        if(i < _iNumLives)
-            heartBitmap->Draw(hDC, 1100 + (heartBitmap->GetWidth() * i) + 10,
-            7, TRUE);
-        else
-            heartEmptyBitmap->Draw(hDC, 1100 + (heartEmptyBitmap->GetWidth() * i) + 10,
-                7, TRUE);
-    }
-
-    wsprintf(szText, "Key Needed: ");
-
-    TextOut(hDC, 50, 5, szText, strlen(szText));
-
-    // Draw the number of remaining keys
-    for (int i = 0; i < keyNeeded - keyAmount; i++)
-        keyUIBitmap->Draw(hDC, 160 + (keyUIBitmap->GetWidth() * i), 7, TRUE);
-
-    wsprintf(szText, "Fireball Amount: %dx", fireballAmount);
-
-    TextOut(hDC, 600, 5, szText, strlen(szText));
-
-    fireballCollectibleBitmap->Draw(hDC, 730, 8, TRUE);
-
-    wsprintf(szText, "Level: %d", level);
-
-    TextOut(hDC, 420, 5, szText, strlen(szText));
 
 
     // Draw the game over message, if necessary
@@ -226,9 +244,6 @@ void GameCycle()
         // Update the background
         _pBackground->Update();
 
-        // Update the sprites
-        _pGame->UpdateSprites();
-
         // Obtain a device context for repainting the game
         HWND  hWindow = _pGame->GetWindow();
         HDC   hDC = GetDC(hWindow);
@@ -236,10 +251,16 @@ void GameCycle()
         // Paint the game to the offscreen device context
         GamePaint(_hOffscreenDC);
 
-        isOnLadderFunc();
-        CheckGround();
-        FacingWhere();
-        Collide();
+        if (!_bGameMenu) 
+        {
+            isOnLadderFunc();
+            CheckGround();
+            FacingWhere();
+            Collide();
+
+            // Update the sprites
+            _pGame->UpdateSprites();
+        }
 
         // Blit the offscreen bitmap to the game screen
         BitBlt(hDC, 0, 0, _pGame->GetWidth(), _pGame->GetHeight(),
@@ -254,131 +275,133 @@ void HandleKeys()
 {
     if (!_bGameOver && !_bGameWon)
     {
-        // Move the player based upon which key presses
-        POINT ptVelocity = _pPlayerSprite->GetVelocity();
-
-        if (GetAsyncKeyState('A') >= 0 && GetAsyncKeyState('D') >= 0)
+        if (!_bGameMenu)
         {
-            if (ptVelocity.x > 0)
+            // Move the player based upon which key presses
+            POINT ptVelocity = _pPlayerSprite->GetVelocity();
+
+            if (GetAsyncKeyState('A') >= 0 && GetAsyncKeyState('D') >= 0)
             {
-                ptVelocity.x -= HORIZONTALGRIP;
-                _pPlayerSprite->SetVelocity(ptVelocity);
-            }
-            else if (ptVelocity.x < 0)
-            {
-                ptVelocity.x += HORIZONTALGRIP;
-                _pPlayerSprite->SetVelocity(ptVelocity);
-            }
-        }
-
-        if (_pPlayerSprite->GetPosition().bottom != _pPlayerSprite->GetBounds().bottom)
-        {
-            if (ptVelocity.y != MAXJUMPSPEED) {
-
-                if (ptVelocity.y < MAXJUMPSPEED) {
-                    ptVelocity.y += GRAVITY;
-                }
-                else {
-                    ptVelocity.y = MAXJUMPSPEED;
-                }
-                _pPlayerSprite->SetVelocity(ptVelocity);
-            }
-        }
-        else {
-            ptVelocity.y = 0;
-        }
-
-        if (GetAsyncKeyState('A') < 0)
-        {
-            // Move left
-            ptVelocity.x = max(ptVelocity.x - 1, -8);
-            _pPlayerSprite->SetVelocity(ptVelocity);
-        }
-        else if (GetAsyncKeyState('D') < 0)
-        {
-            // Move right
-            ptVelocity.x = min(ptVelocity.x + 2, 8);
-            _pPlayerSprite->SetVelocity(ptVelocity);
-        }
-
-        if (GetAsyncKeyState('W') < 0)
-        {
-            if (isOnStair)
-            {
-                // Move up
-                ptVelocity.y = -MAXLADDERSPEED;
-                _pPlayerSprite->SetVelocity(ptVelocity);
-            }
-            else
-            {
-                if (!isJumpPressed) {
-                    ptVelocity.y = min(-MAXJUMPSPEED, --ptVelocity.y);
+                if (ptVelocity.x > 0)
+                {
+                    ptVelocity.x -= HORIZONTALGRIP;
                     _pPlayerSprite->SetVelocity(ptVelocity);
-                    isJumpPressed = true;
-
-                    // Play the jump sound
-                    PlaySound((LPCSTR)IDW_JUMP, _hInstance, SND_ASYNC |
-                        SND_RESOURCE);
+                }
+                else if (ptVelocity.x < 0)
+                {
+                    ptVelocity.x += HORIZONTALGRIP;
+                    _pPlayerSprite->SetVelocity(ptVelocity);
                 }
             }
-        }
 
-        // Ýnfinite jump açýk !! Ground check'te sýkýntý olabiliyor konumlarý check et.
-        if (GetAsyncKeyState('W') >= 0  && isOnGrounded)
-            isJumpPressed = false;
+            if (_pPlayerSprite->GetPosition().bottom != _pPlayerSprite->GetBounds().bottom)
+            {
+                if (ptVelocity.y != MAXJUMPSPEED) {
+
+                    if (ptVelocity.y < MAXJUMPSPEED) {
+                        ptVelocity.y += GRAVITY;
+                    }
+                    else {
+                        ptVelocity.y = MAXJUMPSPEED;
+                    }
+                    _pPlayerSprite->SetVelocity(ptVelocity);
+                }
+            }
+            else {
+                ptVelocity.y = 0;
+            }
+
+            if (GetAsyncKeyState('A') < 0)
+            {
+                // Move left
+                ptVelocity.x = max(ptVelocity.x - 1, -8);
+                _pPlayerSprite->SetVelocity(ptVelocity);
+            }
+            else if (GetAsyncKeyState('D') < 0)
+            {
+                // Move right
+                ptVelocity.x = min(ptVelocity.x + 2, 8);
+                _pPlayerSprite->SetVelocity(ptVelocity);
+            }
+
+            if (GetAsyncKeyState('W') < 0)
+            {
+                if (isOnStair)
+                {
+                    // Move up
+                    ptVelocity.y = -MAXLADDERSPEED;
+                    _pPlayerSprite->SetVelocity(ptVelocity);
+                }
+                else
+                {
+                    if (!isJumpPressed) {
+                        ptVelocity.y = min(-MAXJUMPSPEED, --ptVelocity.y);
+                        _pPlayerSprite->SetVelocity(ptVelocity);
+                        isJumpPressed = true;
+
+                        // Play the jump sound
+                        PlaySound((LPCSTR)IDW_JUMP, _hInstance, SND_ASYNC |
+                            SND_RESOURCE);
+                    }
+                }
+            }
+
+            // Ýnfinite jump açýk !! Ground check'te sýkýntý olabiliyor konumlarý check et.
+            if (GetAsyncKeyState('W') >= 0 && isOnGrounded)
+                isJumpPressed = false;
 
 
-        // if space button pressed use shield
-        if (shieldSprite->IsHidden()) {
-            if (canUseShield) {   // D
-                if ((++shieldInputDelay > shieldMaxDelay) && GetAsyncKeyState('P') < 0) {
-                    shieldSprite->SetHidden(false);
+            // if space button pressed use shield
+            if (shieldSprite->IsHidden()) {
+                if (canUseShield) {   // D
+                    if ((++shieldInputDelay > shieldMaxDelay) && GetAsyncKeyState('P') < 0) {
+                        shieldSprite->SetHidden(false);
 
-                    canUseShield = false;
+                        canUseShield = false;
 
+
+                        // Reset the input delay
+                        shieldInputDelay = 0;
+                    }
+                }
+            }
+            else {
+                if ((++shieldUsageDelay > shieldUsageMaxDelay)) {
+                    CloseShield();
+                }
+            }
+
+            // Fire missiles based upon spacebar presses    // S
+            if ((++_iFireInputDelay > _iFireMaxDelay) && GetAsyncKeyState(' ') < 0 && fireballAmount > 0)
+            {
+                // Create a new missile sprite
+                RECT  rcBounds = { 0, 0, 1250, 800 };
+                RECT  rcPos = _pPlayerSprite->GetPosition();
+                Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
+
+                if (facingRight)
+                {
+                    pSprite->SetPosition(rcPos.right, _pPlayerSprite->GetPosition().bottom - _pPlayerBitmap->GetHeight() / 2);
+                    pSprite->SetVelocity(7, 0);
+                }
+                else
+                {
+                    pSprite->SetPosition(rcPos.left, _pPlayerSprite->GetPosition().bottom - _pPlayerBitmap->GetHeight() / 2);
+                    pSprite->SetVelocity(-7, 0);
+                }
+
+                _pGame->AddSprite(pSprite);
+                /*
+                // Play the missile (fire) sound
+                PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
+                    SND_RESOURCE | SND_NOSTOP);
+                    */
 
                     // Reset the input delay
-                    shieldInputDelay = 0;
-                }
+                _iFireInputDelay = 0;
+                fireballAmount--;
             }
         }
-        else {
-            if ((++shieldUsageDelay > shieldUsageMaxDelay)) {
-                CloseShield();
-            }
-        }
-
-        // Fire missiles based upon spacebar presses    // S
-        if ((++_iFireInputDelay > _iFireMaxDelay) && GetAsyncKeyState(' ') < 0 && fireballAmount > 0)
-        {
-            // Create a new missile sprite
-            RECT  rcBounds = { 0, 0, 1250, 800 };
-            RECT  rcPos = _pPlayerSprite->GetPosition();
-            Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
-
-            if (facingRight)
-            {
-                pSprite->SetPosition(rcPos.right, _pPlayerSprite->GetPosition().bottom - _pPlayerBitmap->GetHeight() / 2);
-                pSprite->SetVelocity(7, 0);
-            }
-            else
-            {
-                pSprite->SetPosition(rcPos.left, _pPlayerSprite->GetPosition().bottom - _pPlayerBitmap->GetHeight() / 2);
-                pSprite->SetVelocity(-7, 0);
-            }
-
-            _pGame->AddSprite(pSprite);
-            /*
-            // Play the missile (fire) sound
-            PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
-                SND_RESOURCE | SND_NOSTOP);
-                */
-
-            // Reset the input delay
-            _iFireInputDelay = 0;
-            fireballAmount--;
-        }
-
     }
     // Start a new game based upon an Enter (Return) key press
     if ((_bGameOver || _bGameWon) && (GetAsyncKeyState(VK_RETURN) < 0)) 
@@ -390,12 +413,21 @@ void HandleKeys()
 
 void MouseButtonDown(int x, int y, BOOL bLeft)
 {
-
 }
 
 void MouseButtonUp(int x, int y, BOOL bLeft)
 {
-
+    if (_bGameMenu)
+    {
+        if (bLeft)
+        {
+            if (x > playButtonX && x < playButtonX + playButtonBitmap->GetWidth() &&
+                y > playButtonY && y < playButtonY + playButtonBitmap->GetHeight())
+            {
+                _bGameMenu = false;
+            }
+        }
+    }
 }
 
 void MouseMove(int x, int y)
@@ -586,6 +618,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     return FALSE;
 }
 
+
 void SpriteDying(Sprite* pSprite)
 {
     /*
@@ -638,6 +671,9 @@ void NewGame()
 
     if (_bGameOver || (!_bGameOver && !_bGameWon)) 
     {
+        _bGameMenu = TRUE;
+        playButtonX = 0;
+        playButtonY = 0;
         level = 1;
         _iNumLives = 3;
         keyNeeded = 1;
