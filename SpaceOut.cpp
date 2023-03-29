@@ -150,7 +150,7 @@ void GamePaint(HDC hDC)
     // Draw the background
     _pBackground->Draw(hDC);
 
-    if (!_bGameOver && !_bGameWon)
+    if (!_bGameWon && !_bGameOver)
     {
         if (!_bGameMenu)
         {
@@ -212,25 +212,37 @@ void GamePaint(HDC hDC)
         else
         {
             gameTitleBitmap->Draw(hDC, 300,  150, TRUE);
+
             playButtonBitmap->Draw(hDC, 600,  500, TRUE);
 
             playButtonX = 600;
             playButtonY = 500;
         }
     }
-
-
     // Draw the game over message, if necessary
-    if (_bGameOver) {
-        _pGameOverBitmap->Draw(hDC, 525, 325, TRUE);
+    else if (_bGameOver) 
+    {
+        _pGameOverBitmap->Draw(hDC, 500, 295, TRUE);
+
+        TCHAR szText[128];
+
+        wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
+
+        TextOut(hDC, 520, 485, szText, strlen(szText));
 
         // Pause the background music
         _pGame->PauseMIDISong();
     }
-
     // Draw the game won message, if necessary
-    if (_bGameWon) {
-        _bGameWonBitmap->Draw(hDC, 525, 325, TRUE);
+    else if (_bGameWon) 
+    {
+        _bGameWonBitmap->Draw(hDC, 500, 295, TRUE);
+
+        TCHAR szText[128];
+
+        wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
+
+        TextOut(hDC, 520, 485, szText, strlen(szText));
 
         // Pause the background music
         _pGame->PauseMIDISong();
@@ -239,36 +251,33 @@ void GamePaint(HDC hDC)
 
 void GameCycle()
 {
-    if (!_bGameOver && !_bGameWon)
+    // Update the background
+    _pBackground->Update();
+
+    // Obtain a device context for repainting the game
+    HWND  hWindow = _pGame->GetWindow();
+    HDC   hDC = GetDC(hWindow);
+
+    // Paint the game to the offscreen device context
+    GamePaint(_hOffscreenDC);
+
+    if (!_bGameMenu && !_bGameWon && !_bGameOver)
     {
-        // Update the background
-        _pBackground->Update();
+        isOnLadderFunc();
+        CheckGround();
+        FacingWhere();
+        Collide();
 
-        // Obtain a device context for repainting the game
-        HWND  hWindow = _pGame->GetWindow();
-        HDC   hDC = GetDC(hWindow);
-
-        // Paint the game to the offscreen device context
-        GamePaint(_hOffscreenDC);
-
-        if (!_bGameMenu) 
-        {
-            isOnLadderFunc();
-            CheckGround();
-            FacingWhere();
-            Collide();
-
-            // Update the sprites
-            _pGame->UpdateSprites();
-        }
-
-        // Blit the offscreen bitmap to the game screen
-        BitBlt(hDC, 0, 0, _pGame->GetWidth(), _pGame->GetHeight(),
-            _hOffscreenDC, 0, 0, SRCCOPY);
-
-        // Cleanup
-        ReleaseDC(hWindow, hDC);
+        // Update the sprites
+        _pGame->UpdateSprites();
     }
+
+    // Blit the offscreen bitmap to the game screen
+    BitBlt(hDC, 0, 0, _pGame->GetWidth(), _pGame->GetHeight(),
+        _hOffscreenDC, 0, 0, SRCCOPY);
+
+    // Cleanup
+    ReleaseDC(hWindow, hDC);
 }
 
 void HandleKeys()
@@ -280,18 +289,15 @@ void HandleKeys()
             // Move the player based upon which key presses
             POINT ptVelocity = _pPlayerSprite->GetVelocity();
 
-            if (GetAsyncKeyState('A') >= 0 && GetAsyncKeyState('D') >= 0)
+            if (ptVelocity.x > 0)
             {
-                if (ptVelocity.x > 0)
-                {
-                    ptVelocity.x -= HORIZONTALGRIP;
-                    _pPlayerSprite->SetVelocity(ptVelocity);
-                }
-                else if (ptVelocity.x < 0)
-                {
-                    ptVelocity.x += HORIZONTALGRIP;
-                    _pPlayerSprite->SetVelocity(ptVelocity);
-                }
+                ptVelocity.x -= HORIZONTALGRIP;
+                _pPlayerSprite->SetVelocity(ptVelocity);
+            }
+            else if (ptVelocity.x < 0)
+            {
+                ptVelocity.x += HORIZONTALGRIP;
+                _pPlayerSprite->SetVelocity(ptVelocity);
             }
 
             if (_pPlayerSprite->GetPosition().bottom != _pPlayerSprite->GetBounds().bottom)
@@ -314,13 +320,13 @@ void HandleKeys()
             if (GetAsyncKeyState('A') < 0)
             {
                 // Move left
-                ptVelocity.x = max(ptVelocity.x - 1, -8);
+                ptVelocity.x = max(ptVelocity.x - ACCELERATIONFORCE, -MAXMOVESPEED);
                 _pPlayerSprite->SetVelocity(ptVelocity);
             }
             else if (GetAsyncKeyState('D') < 0)
             {
                 // Move right
-                ptVelocity.x = min(ptVelocity.x + 2, 8);
+                ptVelocity.x = min(ptVelocity.x + ACCELERATIONFORCE, MAXMOVESPEED);
                 _pPlayerSprite->SetVelocity(ptVelocity);
             }
 
@@ -332,29 +338,41 @@ void HandleKeys()
                     ptVelocity.y = -MAXLADDERSPEED;
                     _pPlayerSprite->SetVelocity(ptVelocity);
                 }
-                else
-                {
-                    if (!isJumpPressed) {
-                        ptVelocity.y = min(-MAXJUMPSPEED, --ptVelocity.y);
-                        _pPlayerSprite->SetVelocity(ptVelocity);
-                        isJumpPressed = true;
+            }
 
-                        // Play the jump sound
-                        PlaySound((LPCSTR)IDW_JUMP, _hInstance, SND_ASYNC |
-                            SND_RESOURCE);
-                    }
+            if (GetAsyncKeyState('S') < 0)
+            {
+                if (isOnStair)
+                {
+                    // Move up
+                    ptVelocity.y = MAXLADDERSPEED;
+                    _pPlayerSprite->SetVelocity(ptVelocity);
+                }
+            }
+
+            // Jump
+            if (GetAsyncKeyState(' ') < 0)
+            {
+                if (!isJumpPressed) {
+                    ptVelocity.y = min(-MAXJUMPSPEED, --ptVelocity.y);
+                    _pPlayerSprite->SetVelocity(ptVelocity);
+                    isJumpPressed = true;
+
+                    // Play the jump sound
+                    PlaySound((LPCSTR)IDW_JUMP, _hInstance, SND_ASYNC |
+                        SND_RESOURCE);
                 }
             }
 
             // Ýnfinite jump açýk !! Ground check'te sýkýntý olabiliyor konumlarý check et.
-            if (GetAsyncKeyState('W') >= 0 && isOnGrounded)
+            if (GetAsyncKeyState(' ') >= 0 && isOnGrounded)
                 isJumpPressed = false;
 
 
             // if space button pressed use shield
             if (shieldSprite->IsHidden()) {
-                if (canUseShield) {   // D
-                    if ((++shieldInputDelay > shieldMaxDelay) && GetAsyncKeyState('P') < 0) {
+                if (canUseShield) {   // K
+                    if ((++shieldInputDelay > shieldMaxDelay) && GetAsyncKeyState('K') < 0) {
                         shieldSprite->SetHidden(false);
 
                         canUseShield = false;
@@ -371,8 +389,8 @@ void HandleKeys()
                 }
             }
 
-            // Fire missiles based upon spacebar presses    // S
-            if ((++_iFireInputDelay > _iFireMaxDelay) && GetAsyncKeyState(' ') < 0 && fireballAmount > 0)
+            // Fire missiles based upon spacebar presses    // J
+            if ((++_iFireInputDelay > _iFireMaxDelay) && GetAsyncKeyState('J') < 0 && fireballAmount > 0)
             {
                 // Create a new missile sprite
                 RECT  rcBounds = { 0, 0, 1250, 800 };
@@ -404,10 +422,13 @@ void HandleKeys()
         }
     }
     // Start a new game based upon an Enter (Return) key press
-    if ((_bGameOver || _bGameWon) && (GetAsyncKeyState(VK_RETURN) < 0)) 
+    else if(_bGameWon || _bGameOver)
     {
-        // Start a new game
-        NewGame();
+        if (GetAsyncKeyState(VK_RETURN) < 0)
+        {
+            // Start a new game
+            NewGame();
+        }
     }
 }
 
@@ -452,22 +473,22 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     {
         if (pHitter == _pPlayerBitmap) {
             if (pHittee == heartBitmap && _iNumLives != MAXLIVE) {
+                pSpriteHittee->Kill();
                 _iNumLives++;
                 // Play the healing sound
                 PlaySound((LPCSTR)IDW_HEAL, _hInstance, SND_ASYNC |
                     SND_RESOURCE);
-                pSpriteHittee->Kill();
             }
             else if (pHittee == keyBitmap) {
 
                 pSpriteHittee->Kill();
                 keyAmount++;
-                // Play the healing sound
+                // Play the key sound
                 PlaySound((LPCSTR)IDW_KEY, _hInstance, SND_ASYNC |
                     SND_RESOURCE);
 
                 if (keyAmount == keyNeeded) {
-                    // Play the game over sound
+                    // Play the door open sound
                     PlaySound((LPCSTR)IDW_DOOROPEN, _hInstance, SND_ASYNC |
                         SND_RESOURCE);
                 }
@@ -479,16 +500,22 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
         }
         else {
             if (pHitter == heartBitmap && _iNumLives != MAXLIVE) {
-                _iNumLives++;
                 pSpriteHitter->Kill();
+                _iNumLives++;
+                // Play the healing sound
+                PlaySound((LPCSTR)IDW_HEAL, _hInstance, SND_ASYNC |
+                    SND_RESOURCE);
             }
             else if (pHitter == keyBitmap) {
 
                 pSpriteHitter->Kill();
                 keyAmount++;
+                // Play the key sound
+                PlaySound((LPCSTR)IDW_KEY, _hInstance, SND_ASYNC |
+                    SND_RESOURCE);
 
                 if (keyAmount == keyNeeded) {
-                    // Play the game over sound
+                    // Play the door open sound
                     PlaySound((LPCSTR)IDW_DOOROPEN, _hInstance, SND_ASYNC |
                         SND_RESOURCE);
                 }
@@ -791,7 +818,7 @@ void AddOtherSprites(int whichSprite, int x, int y, int x1, int x2) {
     else if (whichSprite == 11)    // door
     {
         doorSprite = new Sprite(doorBitmap, rcBounds, BA_STOP);
-        doorSprite->SetPosition(doorBitmap->GetWidth() * x, 25 * y -7);
+        doorSprite->SetPosition(x, 25 * y -7);
         _pGame->AddSprite(doorSprite);
     }
     

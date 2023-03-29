@@ -71,10 +71,12 @@ RECT			startPosition;
 BOOL			facingRight = true;
 
 // About player movement, physic and jumping
-const int	HORIZONTALGRIP = 1;
+const int	HORIZONTALGRIP = 2;
 const int	GRAVITY = 1;
 const int   MAXJUMPSPEED = 8;
 const int   MAXLADDERSPEED = 6;
+const int   MAXMOVESPEED = 8;
+const int   ACCELERATIONFORCE = 3;
 BOOL        isJumpPressed = false;
 
 // About Stairs and platforms
