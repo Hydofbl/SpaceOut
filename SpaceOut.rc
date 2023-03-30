@@ -41,6 +41,10 @@ IDB_MISSILE		BITMAP		"Sprites/MageMissile.bmp"
 IDB_FIREBALLICON	BITMAP		"Sprites/FireballIcon.bmp"
 IDB_GAMETITLE	BITMAP		"Sprites/GameTitle.bmp"
 IDB_PLAYBUTTON	BITMAP		"Sprites/PlayButton.bmp"
+IDB_HOWTOPLAYBUTTON	BITMAP		"Sprites/HowToPlayButton.bmp"
+IDB_EXITBUTTON	BITMAP		"Sprites/ExitButton.bmp"
+IDB_BACKBUTTON	BITMAP		"Sprites/BackButton.bmp"
+IDB_HOWTOPLAY	BITMAP		"Sprites/Howtoplay.bmp"
 
 //-----------------------------------------------------------------
 // Wave Sounds
