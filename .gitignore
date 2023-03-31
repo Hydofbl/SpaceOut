@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+.vs/SpaceOut/v16/Browse.VC.opendb
+.vs/SpaceOut/v16/Browse.VC.db-wal
+.vs/SpaceOut/v16/Browse.VC.db-shm
+.vs/SpaceOut/v16/Browse.VC.db
+.vs/SpaceOut/v16/.suo
