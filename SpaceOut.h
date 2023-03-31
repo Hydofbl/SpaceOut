@@ -41,7 +41,7 @@ Bitmap*			  _pPlayerBitmap;
 Sprite*           _pPlayerSprite;
 
 // Level Informations
-BOOL    _bGameOver, _bGameWon, _bGameMenu;
+BOOL    _bGameOver, _bGameWon, _bGameMenu, _bGameHowToPlay;
 int     enemyFireRate;
 int		gameDifficulty = 1;
 int		level = 1;
@@ -50,7 +50,17 @@ int		maxGhostAmount = 3;
 // Menu
 Bitmap* gameTitleBitmap;
 Bitmap* playButtonBitmap;
-int playButtonX = 0, playButtonY = 0;
+int playButtonX = 0, playButtonY = 0, playButtonYOffset = -50;
+Bitmap* howToPlayButtonBitmap;
+int howToPlayButtonX = 0, howToPlayButtonY = 0, howToPlayButtonYOffset = 75;
+Bitmap* exitButtonBitmap;
+int exitButtonX = 0, exitButtonY = 0, exitButtonYOffset = 200;
+
+// How To Play
+Bitmap* backButtonBitmap;
+Bitmap* howToPlayBitmap;
+Bitmap* howToPlayTitleBitmap;
+int backButtonX = 0, backButtonY = 0, backButtonYOffset = 285;
 
 // Firing
 int               _iFireInputDelay; 

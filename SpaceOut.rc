@@ -45,6 +45,7 @@ IDB_HOWTOPLAYBUTTON	BITMAP		"Sprites/HowToPlayButton.bmp"
 IDB_EXITBUTTON	BITMAP		"Sprites/ExitButton.bmp"
 IDB_BACKBUTTON	BITMAP		"Sprites/BackButton.bmp"
 IDB_HOWTOPLAY	BITMAP		"Sprites/Howtoplay.bmp"
+IDB_HOWTOPLAYTITLE	BITMAP		"Sprites/HowToPlayTitle.bmp"
 
 //-----------------------------------------------------------------
 // Wave Sounds

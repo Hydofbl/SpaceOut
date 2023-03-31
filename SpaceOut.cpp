@@ -15,8 +15,8 @@ BOOL GameInitialize(HINSTANCE hInstance)
 {
     // _pGame = new GameEngine(hInstance, TEXT("Oyun Adi"), TEXT("Oyun Adi"), LOGO_NORMAL, LOGO_SMALL, X_BOYUTU, Y_BOYUTU);
   // Create the game engine
-    _pGame = new GameEngine(hInstance, TEXT("Oyun"),
-        TEXT("Oyun"), IDI_LOGO, IDI_LOGO_SM, 1260, 770);
+    _pGame = new GameEngine(hInstance, TEXT("Space Dungeon"),
+        TEXT("Space Dungeon"), IDI_LOGO, IDI_LOGO_SM, 1260, 770);
     if (_pGame == NULL)
         return FALSE;
 
@@ -69,7 +69,13 @@ void GameStart(HWND hWindow)
     fireballCollectibleBitmap = new Bitmap(hDC, IDB_FIREBALLICON, _hInstance);
 
     gameTitleBitmap = new Bitmap(hDC, IDB_GAMETITLE, _hInstance);
-    playButtonBitmap = new Bitmap(hDC, IDB_PLAYBUTTON, _hInstance);
+    playButtonBitmap = new Bitmap(hDC, IDB_PLAYBUTTON, _hInstance); 
+    howToPlayButtonBitmap = new Bitmap(hDC, IDB_HOWTOPLAYBUTTON, _hInstance);
+    exitButtonBitmap = new Bitmap(hDC, IDB_EXITBUTTON, _hInstance);
+    backButtonBitmap = new Bitmap(hDC, IDB_BACKBUTTON, _hInstance);
+    howToPlayBitmap = new Bitmap(hDC, IDB_HOWTOPLAY, _hInstance);
+    howToPlayTitleBitmap = new Bitmap(hDC, IDB_HOWTOPLAYTITLE, _hInstance);
+
 
     // Create the starry background
     _pBackground = new StarryBackground(1250, 800);
@@ -113,6 +119,11 @@ void GameEnd()
     delete fireballCollectibleBitmap;
     delete gameTitleBitmap;
     delete playButtonBitmap;
+    delete howToPlayButtonBitmap;
+    delete exitButtonBitmap;
+    delete backButtonBitmap;
+    delete howToPlayBitmap;
+    delete howToPlayTitleBitmap;
 
     for (int i = 0; i < numOfPlatformsDynmc; i++)
     {
@@ -152,7 +163,35 @@ void GamePaint(HDC hDC)
 
     if (!_bGameWon && !_bGameOver)
     {
-        if (!_bGameMenu)
+        if (_bGameMenu)
+        {
+            gameTitleBitmap->Draw(hDC, 300, 100, TRUE);
+
+            playButtonX = 630 - (playButtonBitmap->GetWidth() / 2);
+            playButtonY = 385 - (playButtonBitmap->GetHeight() / 2) + playButtonYOffset;
+
+            howToPlayButtonX = 630 - (howToPlayButtonBitmap->GetWidth() / 2);
+            howToPlayButtonY = 385 - (howToPlayButtonBitmap->GetHeight() / 2) + howToPlayButtonYOffset;
+
+            exitButtonX = 630 - (exitButtonBitmap->GetWidth() / 2);
+            exitButtonY = 385 - (exitButtonBitmap->GetHeight() / 2) + exitButtonYOffset;
+
+            playButtonBitmap->Draw(hDC, playButtonX, playButtonY, TRUE);
+            howToPlayButtonBitmap->Draw(hDC, howToPlayButtonX, howToPlayButtonY, TRUE);
+            exitButtonBitmap->Draw(hDC, exitButtonX, exitButtonY, TRUE);
+        }
+        else if (_bGameHowToPlay)
+        {
+            howToPlayTitleBitmap->Draw(hDC, 630 - (howToPlayTitleBitmap->GetWidth() / 2), 50, TRUE);
+
+            howToPlayBitmap->Draw(hDC, 630 -(howToPlayBitmap->GetWidth() / 2), 385 - (howToPlayBitmap->GetHeight() / 2) - 20, TRUE);
+
+            backButtonX = 630 - (exitButtonBitmap->GetWidth() / 2);
+            backButtonY = 385 - (exitButtonBitmap->GetHeight() / 2) + backButtonYOffset;
+
+            backButtonBitmap->Draw(hDC, backButtonX, backButtonY, TRUE);
+        }
+        else
         {
             for (int y = 0; y < 29; y++)
             {
@@ -206,29 +245,19 @@ void GamePaint(HDC hDC)
             fireballCollectibleBitmap->Draw(hDC, 730, 8, TRUE);
 
             wsprintf(szText, "Level: %d", level);
-
             TextOut(hDC, 420, 5, szText, strlen(szText));
-        }
-        else
-        {
-            gameTitleBitmap->Draw(hDC, 300,  150, TRUE);
-
-            playButtonBitmap->Draw(hDC, 600,  500, TRUE);
-
-            playButtonX = 600;
-            playButtonY = 500;
         }
     }
     // Draw the game over message, if necessary
     else if (_bGameOver) 
     {
-        _pGameOverBitmap->Draw(hDC, 500, 295, TRUE);
+        _pGameOverBitmap->Draw(hDC, 630 - (_pGameOverBitmap->GetWidth() / 2), 385 - (_pGameOverBitmap->GetHeight() / 2) - 35, TRUE);
 
         TCHAR szText[128];
 
         wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
 
-        TextOut(hDC, 520, 485, szText, strlen(szText));
+        TextOut(hDC, 520, 640, szText, strlen(szText));
 
         // Pause the background music
         _pGame->PauseMIDISong();
@@ -236,13 +265,13 @@ void GamePaint(HDC hDC)
     // Draw the game won message, if necessary
     else if (_bGameWon) 
     {
-        _bGameWonBitmap->Draw(hDC, 500, 295, TRUE);
+        _bGameWonBitmap->Draw(hDC, 630 - (_bGameWonBitmap->GetWidth() / 2), 385 - (_bGameWonBitmap->GetHeight() / 2) - 35, TRUE);
 
         TCHAR szText[128];
 
         wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
 
-        TextOut(hDC, 520, 485, szText, strlen(szText));
+        TextOut(hDC, 520, 640, szText, strlen(szText));
 
         // Pause the background music
         _pGame->PauseMIDISong();
@@ -261,7 +290,7 @@ void GameCycle()
     // Paint the game to the offscreen device context
     GamePaint(_hOffscreenDC);
 
-    if (!_bGameMenu && !_bGameWon && !_bGameOver)
+    if (!_bGameMenu && !_bGameHowToPlay && !_bGameWon && !_bGameOver)
     {
         isOnLadderFunc();
         CheckGround();
@@ -442,10 +471,37 @@ void MouseButtonUp(int x, int y, BOOL bLeft)
     {
         if (bLeft)
         {
+            // if Play button pressed.
             if (x > playButtonX && x < playButtonX + playButtonBitmap->GetWidth() &&
                 y > playButtonY && y < playButtonY + playButtonBitmap->GetHeight())
             {
                 _bGameMenu = false;
+            }
+            // if HowToPlay button pressed.
+            if (x > howToPlayButtonX && x < howToPlayButtonX + howToPlayButtonBitmap->GetWidth() &&
+                y > howToPlayButtonY && y < howToPlayButtonY + howToPlayButtonBitmap->GetHeight())
+            {
+                _bGameHowToPlay = true;
+                _bGameMenu = false;
+            }
+            // if Exit button pressed.
+            if (x > exitButtonX && x < exitButtonX + exitButtonBitmap->GetWidth() &&
+                y > exitButtonY && y < exitButtonY + exitButtonBitmap->GetHeight())
+            {
+                exit(0);
+            }
+        }
+    }
+    else if (_bGameHowToPlay)
+    {
+        if (bLeft)
+        {
+            // if Back button pressed.
+            if (x > backButtonX && x < backButtonX + backButtonBitmap->GetWidth() &&
+                y > backButtonY && y < backButtonY + backButtonBitmap->GetHeight())
+            {
+                _bGameMenu = true;
+                _bGameHowToPlay = false;
             }
         }
     }

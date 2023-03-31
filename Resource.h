@@ -33,13 +33,17 @@
 #define IDB_BOMBERBOMB			 2018
 #define IDB_SHIELD				 2019
 #define IDB_GAMEWON				 2020
-#define IDB_MISSILE				 2021
 #define IDB_KEYHORIZONTAL		 2022
 #define IDB_HEARTEMPTY			 2023
 #define IDB_FIREBALLICON		 2024
 // Menu Bitmaps
 #define IDB_GAMETITLE			 2025
 #define IDB_PLAYBUTTON			 2026
+#define IDB_HOWTOPLAYBUTTON			 2027
+#define IDB_EXITBUTTON			 2028
+#define IDB_BACKBUTTON			 2029
+#define IDB_HOWTOPLAY			 2030
+#define IDB_HOWTOPLAYTITLE			 2031
 
 //-----------------------------------------------------------------
 // Wave Sounds                Range : 3000 - 3999
