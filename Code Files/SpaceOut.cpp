@@ -215,7 +215,7 @@ void GamePaint(HDC hDC)
 
             TCHAR szText[128];
 
-            wsprintf(szText, "Lives: ");
+            wsprintf(szText, " Lives:  ");
 
             TextOut(hDC, 1040, 5, szText, strlen(szText));
 
@@ -230,7 +230,7 @@ void GamePaint(HDC hDC)
                         7, TRUE);
             }
 
-            wsprintf(szText, "Key Needed: ");
+            wsprintf(szText, " Key Needed:  ");
 
             TextOut(hDC, 50, 5, szText, strlen(szText));
 
@@ -238,13 +238,15 @@ void GamePaint(HDC hDC)
             for (int i = 0; i < keyNeeded - keyAmount; i++)
                 keyUIBitmap->Draw(hDC, 160 + (keyUIBitmap->GetWidth() * i), 7, TRUE);
 
-            wsprintf(szText, "Fireball Amount: %dx", fireballAmount);
+            wsprintf(szText, " Fireball Amount: %dx ", fireballAmount);
 
             TextOut(hDC, 600, 5, szText, strlen(szText));
 
-            fireballCollectibleBitmap->Draw(hDC, 730, 8, TRUE);
+            // Draw the number of remaining fireballs
+            for (int i = 0; i < fireballAmount; i++)
+                fireballCollectibleBitmap->Draw(hDC, 745 + (fireballCollectibleBitmap->GetWidth() * i), 5, TRUE);
 
-            wsprintf(szText, "Level: %d", level);
+            wsprintf(szText, " Level: %d ", level);
             TextOut(hDC, 420, 5, szText, strlen(szText));
         }
     }
@@ -255,7 +257,7 @@ void GamePaint(HDC hDC)
 
         TCHAR szText[128];
 
-        wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
+        wsprintf(szText, " PRESS ENTER KEY TO CONTINUE ");
 
         TextOut(hDC, 520, 640, szText, strlen(szText));
 
@@ -269,7 +271,7 @@ void GamePaint(HDC hDC)
 
         TCHAR szText[128];
 
-        wsprintf(szText, "PRESS ENTER KEY TO CONTINUE");
+        wsprintf(szText, " PRESS ENTER KEY TO CONTINUE ");
 
         TextOut(hDC, 520, 640, szText, strlen(szText));
 
